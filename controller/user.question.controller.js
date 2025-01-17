@@ -87,7 +87,7 @@ const getQuestions = async (req, res) => {
                     }
                     const answers = await UserAnswer.find({questionId})
                     .populate("userId", "name")
-                    .exec();gitignore
+                    .exec();
                     res.status(200).send({
                               answers
                             });
