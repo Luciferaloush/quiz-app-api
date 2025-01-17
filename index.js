@@ -30,7 +30,10 @@ io.on('connection', (socket) => {
         // مثلاً، يمكنك إرسال البيانات إلى الـ controller
         answerController.submitAnswer(data);
         // ثم يمكنك إبلاغ العملاء الآخرين
-        socket.broadcast.emit('newAnswer', data);
+        socket.broadcast.emit('newAnswer', {
+            answer: data.answer,
+            name: data.name
+        });
     });
 
     socket.on('disconnect', () => {
