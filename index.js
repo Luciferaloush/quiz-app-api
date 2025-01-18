@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const answerController = require('./controller/user.question.controller');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -11,6 +12,7 @@ const io = socketIo(server);
 
 const log = console.log;
 app.use(express.json()); // Handle JSON body
+app.use(cors());
 app.use((req, res, next) => {
           console.log(req.body); // Log the request body
           next();
@@ -23,13 +25,9 @@ app.use('/quizz/v1/api/userQuestion',require('./router/answer.question.router'))
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    // يمكنك إضافة أحداث هنا
     socket.on('submitAnswer', (data) => {
-        // التعامل مع الإجابات الجديدة
-        // يمكنك استخدام الدالة submitAnswer هنا
-        // مثلاً، يمكنك إرسال البيانات إلى الـ controller
+        console.log('Received answer:', data); 
         answerController.submitAnswer(data);
-        // ثم يمكنك إبلاغ العملاء الآخرين
         socket.broadcast.emit('newAnswer', {
             answer: data.answer,
             name: data.name
